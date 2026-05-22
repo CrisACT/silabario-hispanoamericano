@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="Silabario Hispanoamericano interactivo para aprender a leer en español">
+  <title>Silabario Hispanoamericano</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     PÁGINA PRINCIPAL
+══════════════════════════════════════════ -->
+<div class="page active" id="home-page">
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="logo-text" aria-label="Silabario">
+      <span class="logo-sil">Sil</span><span class="logo-sep">·</span><span class="logo-ario">abario</span><span class="logo-excl">!</span>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="settings-btn" aria-label="Configuración">⚙️</button>
+    </div>
+  </header>
+
+  <!-- Barra de progreso global -->
+  <div class="global-progress">
+    <div class="global-progress-fill" id="global-progress-fill" style="width:0%"></div>
+  </div>
+
+  <!-- Portada del libro -->
+  <div class="portada-section">
+    <img src="assets/ilustraciones/portada/portada.png"
+         alt="Silabario Hispanoamericano — Adrián Dufflocq G."
+         class="portada-img"
+         onerror="this.style.display='none'">
+  </div>
+
+  <!-- Bienvenida -->
+  <section class="welcome-section">
+    <div class="welcome-text">
+      <span id="welcome-avatar" style="font-size:2rem"></span>
+      <h2 id="welcome-name">¡Hola! ¿Cómo te llamas?</h2>
+      <p>¿Listo para leer hoy?</p>
+    </div>
+    <div class="streak-badge" id="streak-count">🔥 0 días</div>
+  </section>
+
+  <!-- Grid de lecciones -->
+  <section class="lessons-section">
+    <div class="section-title">Mis lecciones</div>
+    <div class="lessons-grid stagger-children" id="lessons-grid">
+      <!-- Generado por app.js -->
+    </div>
+  </section>
+
+  <!-- FAB Progreso -->
+  <button class="fab" id="progress-fab" aria-label="Ver mi progreso">
+    📊 Mi progreso
+  </button>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+     PÁGINA DE LECCIÓN
+══════════════════════════════════════════ -->
+<div class="page" id="lesson-page">
+
+  <!-- Header de lección -->
+  <header id="lesson-header" class="lesson-header">
+    <!-- Renderizado por lesson-view.js -->
+  </header>
+
+  <!-- Contenido de la lección -->
+  <main class="lesson-content" id="lesson-content">
+
+    <!-- Panel 1: Tablero -->
+    <div class="section-panel active" id="tablero-panel">
+      <!-- Renderizado dinámicamente -->
+    </div>
+
+    <!-- Panel 2: Pilar -->
+    <div class="section-panel" id="pilar-panel">
+      <!-- Renderizado dinámicamente -->
+    </div>
+
+    <!-- Panel 3: Rieles -->
+    <div class="section-panel" id="rails-panel">
+      <!-- Renderizado dinámicamente -->
+    </div>
+
+    <!-- Panel 4: Juegos -->
+    <div class="section-panel" id="games-panel">
+      <!-- Renderizado dinámicamente -->
+    </div>
+
+  </main>
+
+  <!-- Navegación de secciones -->
+  <nav class="section-nav" role="tablist" aria-label="Secciones de la lección">
+    <button class="section-tab active" role="tab" onclick="renderSection(0)" aria-label="Conoce la letra">
+      <span class="tab-icon">📚</span>
+      <span>Letra</span>
+    </button>
+    <button class="section-tab" role="tab" onclick="renderSection(1)" aria-label="Lee palabras">
+      <span class="tab-icon">📖</span>
+      <span>Palabras</span>
+    </button>
+    <button class="section-tab" role="tab" onclick="renderSection(2)" aria-label="Lee frases">
+      <span class="tab-icon">💬</span>
+      <span>Frases</span>
+    </button>
+    <button class="section-tab" role="tab" onclick="renderSection(3)" aria-label="¡A jugar!">
+      <span class="tab-icon">🎮</span>
+      <span>Juegos</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+     PÁGINA DE PROGRESO
+══════════════════════════════════════════ -->
+<div class="page" id="progress-page">
+
+  <header class="app-header">
+    <button class="icon-btn" id="back-from-progress" aria-label="Volver">←</button>
+    <h2 style="font-size:1.3rem;font-weight:900">Mi Progreso</h2>
+    <div style="width:56px"></div>
+  </header>
+
+  <div class="progress-page">
+
+    <!-- Perfil -->
+    <div class="profile-card animate-fadein">
+      <div class="profile-avatar" id="prog-avatar">🐸</div>
+      <div class="profile-name"  id="prog-name">---</div>
+
+      <div class="stats-row" id="prog-stats">
+        <!-- Generado dinámicamente -->
+      </div>
+
+      <div class="total-progress">
+        <div style="font-weight:800;margin-bottom:4px">Progreso total</div>
+        <div class="progress-bar-outer">
+          <div class="progress-bar-fill" id="prog-bar-fill" style="width:0%"></div>
+        </div>
+        <div class="progress-pct" id="prog-pct">0 / 48 lecciones</div>
+      </div>
+    </div>
+
+    <!-- Trofeos -->
+    <div class="section-title">Mis trofeos</div>
+    <div class="trophies-grid" id="prog-trophies">
+      <!-- Generado dinámicamente -->
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODALES
+══════════════════════════════════════════ -->
+
+<!-- Modal de perfil -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal animate-fadein">
+    <h2>👋 ¡Hola!</h2>
+    <p>¿Cómo te llamas? Elige tu avatar favorito.</p>
+
+    <input type="text"
+           class="input-field"
+           id="child-name-input"
+           placeholder="Mi nombre es..."
+           maxlength="20"
+           autocomplete="off">
+
+    <div class="avatar-grid mt-16">
+      <div class="avatar-option selected" data-avatar="0">🐸</div>
+      <div class="avatar-option"         data-avatar="1">🦊</div>
+      <div class="avatar-option"         data-avatar="2">🐨</div>
+      <div class="avatar-option"         data-avatar="3">🐰</div>
+      <div class="avatar-option"         data-avatar="4">🦋</div>
+      <div class="avatar-option"         data-avatar="5">🐯</div>
+    </div>
+
+    <button class="btn btn-success btn-full mt-16" id="profile-save-btn">
+      ¡Listo! ¡Vamos a leer! 📚
+    </button>
+  </div>
+</div>
+
+<!-- Modal de configuración -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <h2>⚙️ Configuración</h2>
+
+    <div class="setting-row">
+      <span class="setting-label">🔊 Velocidad de voz</span>
+      <div class="setting-options">
+        <button class="setting-opt" data-setting="speed" data-val="slow"   onclick="setSetting('speed','slow')">🐢</button>
+        <button class="setting-opt active" data-setting="speed" data-val="normal" onclick="setSetting('speed','normal')">▶️</button>
+        <button class="setting-opt" data-setting="speed" data-val="fast"   onclick="setSetting('speed','fast')">🐇</button>
+      </div>
+    </div>
+
+    <div class="setting-row">
+      <span class="setting-label">🔤 Tamaño de texto</span>
+      <div class="setting-options">
+        <button class="setting-opt active" data-setting="textsize" data-val=""       onclick="setSetting('textsize','')">A</button>
+        <button class="setting-opt" data-setting="textsize" data-val="large"  onclick="setSetting('textsize','large')">AA</button>
+        <button class="setting-opt" data-setting="textsize" data-val="xlarge" onclick="setSetting('textsize','xlarge')">AAA</button>
+      </div>
+    </div>
+
+    <div class="setting-row">
+      <span class="setting-label">🎨 Tema</span>
+      <div class="setting-options">
+        <button class="setting-opt active" data-setting="theme" data-val=""     onclick="setSetting('theme','')">☀️</button>
+        <button class="setting-opt" data-setting="theme" data-val="dark"  onclick="setSetting('theme','dark')">🌙</button>
+      </div>
+    </div>
+
+    <!-- Selector de voz -->
+    <div class="setting-row" style="flex-direction:column;align-items:flex-start;gap:8px">
+      <span class="setting-label">🎙️ Voz en español</span>
+      <div style="display:flex;gap:8px;width:100%;align-items:center">
+        <select id="voice-selector"
+                style="flex:1;border:1.5px solid var(--ornament-color);border-radius:10px;
+                       padding:8px 10px;font-family:inherit;font-size:0.85rem;
+                       background:var(--color-bg);color:var(--color-text);cursor:pointer">
+          <option value="">— Cargando voces… —</option>
+        </select>
+        <button class="btn btn-ghost" style="padding:8px 12px;min-height:40px;flex-shrink:0"
+                onclick="testSelectedVoice()">▶ Probar</button>
+      </div>
+      <span id="voice-status" style="font-size:0.78rem;color:var(--color-text-light)"></span>
+    </div>
+
+    <div class="setting-row" style="border:none;padding-bottom:0">
+      <span class="setting-label">👤 Mi perfil</span>
+      <button class="btn btn-ghost" style="padding:8px 14px;min-height:40px"
+              onclick="closeSettings();openProfileModal()">Cambiar</button>
+    </div>
+
+    <button class="btn btn-full mt-16" id="close-settings"
+            style="background:linear-gradient(135deg,#27AE60,#219A52)">
+      ✓ Cerrar
+    </button>
+
+    <button class="btn btn-danger btn-full mt-8" onclick="confirmReset()">
+      🔄 Reiniciar progreso
+    </button>
+  </div>
+</div>
+
+<!-- Canvas para confetti -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- Trophy toast -->
+<div class="trophy-toast" id="trophy-toast" role="status" aria-live="polite"></div>
+
+<!-- Mascota -->
+<div class="mascot-wrapper" id="mascot-wrapper" aria-hidden="true">
+  <!-- Generado por mascot.js -->
+</div>
+
+<!-- Scripts -->
+<script src="js/silabario-data.js"></script>
+<script src="js/illustrations-data.js"></script>
+<script src="js/lessons-data.js"></script>
+<script src="js/speech.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/mascot.js"></script>
+<script src="js/games.js"></script>
+<script src="js/lesson-view.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
