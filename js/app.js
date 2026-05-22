@@ -216,6 +216,15 @@ function openSettings() {
   document.getElementById('settings-modal')?.classList.add('active');
   applySettingsUI();
   populateVoiceSelector();
+  _updateSettingsProfile();
+}
+
+function _updateSettingsProfile() {
+  const p = getProgress();
+  const avatarEl = document.getElementById('settings-avatar');
+  const nameEl   = document.getElementById('settings-name');
+  if (avatarEl) avatarEl.textContent = AVATARS[p.child.avatar] || '🐸';
+  if (nameEl)   nameEl.textContent   = p.child.name || 'Sin nombre';
 }
 
 function closeSettings() {
@@ -281,58 +290,86 @@ function applySettings() {
 function populateVoiceSelector() {
   const sel    = document.getElementById('voice-selector');
   const status = document.getElementById('voice-status');
+  const tip    = document.getElementById('voice-tip');
   if (!sel) return;
 
+  const LATAM_LANGS = ['es-MX','es-US','es-CL','es-AR','es-CO','es-PE','es-VE','es-419'];
   const voices = speechSynthesis.getVoices();
   const spanishVoices = voices.filter(v => v.lang.startsWith('es'));
 
   if (!spanishVoices.length) {
-    sel.innerHTML = '<option value="">— Sin voces españolas instaladas —</option>';
-    if (status) status.textContent = '⚠️ No se encontraron voces en español. Instala el paquete de idioma Español en Windows.';
+    sel.innerHTML = '<option value="">— Sin voces en español instaladas —</option>';
+    if (status) status.textContent = '⚠️ No se encontraron voces en español.';
+    if (tip) {
+      tip.innerHTML = `<strong>¿Cómo instalar voz en español?</strong><br>
+        En Windows: <em>Inicio → Configuración → Hora e idioma → Idioma →
+        Agregar idioma → Español (México)</em> e instala el paquete
+        de <strong>Texto a voz</strong>. Reinicia el navegador.`;
+      tip.classList.remove('hidden');
+    }
     return;
   }
 
-  // Separar LATAM de España para ordenar mejor
-  const LATAM_LANGS = ['es-MX','es-US','es-CL','es-AR','es-CO','es-PE','es-VE','es-419'];
-  const latam  = spanishVoices.filter(v => LATAM_LANGS.includes(v.lang));
-  const others = spanishVoices.filter(v => !LATAM_LANGS.includes(v.lang));
+  // LATAM primero, España al final
+  const latam   = spanishVoices.filter(v => LATAM_LANGS.includes(v.lang));
+  const others  = spanishVoices.filter(v => !LATAM_LANGS.includes(v.lang));
   const ordered = [...latam, ...others];
 
-  // Guardar la voz preferida del usuario
-  const savedVoiceName = localStorage.getItem('silabario_voice') || '';
+  const savedName = localStorage.getItem('silabario_voice') || '';
+  const activeName = savedName || (_bestVoice?.name) || '';
 
-  sel.innerHTML = ordered.map(v => {
-    const label   = `${v.name} (${v.lang})${!v.localService ? ' 🌐' : ''}`;
-    const selected = v.name === (savedVoiceName || _bestVoice?.name) ? ' selected' : '';
-    return `<option value="${v.name}"${selected}>${label}</option>`;
-  }).join('');
+  sel.innerHTML = [
+    latam.length  ? `<optgroup label="✅ Español Latinoamericano">` +
+      latam.map(v => voiceOption(v, activeName)).join('') + `</optgroup>` : '',
+    others.length ? `<optgroup label="🇪🇸 Español (España)">` +
+      others.map(v => voiceOption(v, activeName)).join('') + `</optgroup>` : '',
+  ].join('');
 
-  // Aplicar si hay una guardada
-  if (savedVoiceName) {
-    setPreferredVoice(savedVoiceName);
-  }
+  if (savedName) setPreferredVoice(savedName);
 
-  if (status) {
-    const current = _bestVoice;
-    if (current) {
-      const isLatam = LATAM_LANGS.includes(current.lang);
-      status.textContent = isLatam
-        ? `✅ Usando voz latinoamericana: ${current.name}`
-        : `ℹ️ Usando: ${current.name} — Selecciona una voz latino si está disponible`;
-    } else {
-      status.textContent = '⚠️ Voz no seleccionada — elige una de la lista';
-    }
-  }
+  // Estado actual
+  _updateVoiceStatus(status, tip, LATAM_LANGS);
 
-  // Cambio manual de voz
+  // Cambio manual
   sel.onchange = () => {
     const chosen = voices.find(v => v.name === sel.value);
-    if (chosen) {
-      setPreferredVoice(chosen.name);
-      localStorage.setItem('silabario_voice', chosen.name);
-      if (status) status.textContent = `✅ Voz seleccionada: ${chosen.name}`;
-    }
+    if (!chosen) return;
+    setPreferredVoice(chosen.name);
+    localStorage.setItem('silabario_voice', chosen.name);
+    _updateVoiceStatus(status, tip, LATAM_LANGS);
   };
+}
+
+function voiceOption(v, activeName) {
+  const online   = !v.localService ? ' 🌐' : '';
+  const selected = v.name === activeName ? ' selected' : '';
+  return `<option value="${v.name}"${selected}>${v.name}${online}</option>`;
+}
+
+function _updateVoiceStatus(status, tip, LATAM_LANGS) {
+  if (!_bestVoice) {
+    if (status) status.textContent = '⚠️ Ninguna voz seleccionada';
+    return;
+  }
+  const isLatam = LATAM_LANGS.includes(_bestVoice.lang);
+  const isOnline = !_bestVoice.localService;
+  if (status) {
+    status.textContent = isLatam
+      ? `✅ ${_bestVoice.name}${isOnline ? ' (online, alta calidad)' : ''}`
+      : `⚠️ ${_bestVoice.name} — Esta voz suena con acento de España`;
+  }
+  if (tip) {
+    if (!isLatam) {
+      tip.innerHTML = `<strong>💡 Tip:</strong> Esta voz suena con acento de España.
+        Para acento latinoamericano, en Windows instala
+        <strong>Español (México)</strong> desde
+        <em>Configuración → Idioma → Agregar idioma</em> e instala
+        el paquete de Texto a voz. Luego reabre el navegador.`;
+      tip.classList.remove('hidden');
+    } else {
+      tip.classList.add('hidden');
+    }
+  }
 }
 
 function testSelectedVoice() {

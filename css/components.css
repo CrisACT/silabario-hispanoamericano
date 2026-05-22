@@ -2,6 +2,127 @@
    COMPONENTES — Silabario Hispanoamericano
    ============================================ */
 
+/* ══════════════════════════════════════════
+   SETTINGS MODAL — rediseño
+   ══════════════════════════════════════════ */
+
+.settings-modal {
+  padding: 20px 20px 24px;
+  max-height: 92vh;
+  overflow-y: auto;
+}
+
+.settings-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* Sección con borde vintage */
+.settings-section {
+  border: 1px solid rgba(200,169,110,0.35);
+  border-radius: var(--border-radius-md);
+  padding: 12px 14px 8px;
+  margin-bottom: 10px;
+  background: var(--paper-dark, #F5EDCC);
+}
+[data-theme="dark"] .settings-section {
+  background: rgba(255,255,255,0.03);
+}
+
+.settings-section-title {
+  font-size: 0.72rem;
+  font-weight: 900;
+  color: var(--ornament-color);
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  margin-bottom: 10px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(200,169,110,0.3);
+}
+
+/* Label con subtítulo descriptivo */
+.setting-label-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.setting-hint {
+  font-size: 0.72rem;
+  color: var(--color-text-light);
+  font-weight: 400;
+}
+
+/* Perfil dentro del settings */
+.settings-profile-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Selector de voz */
+.voice-selector-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.voice-select {
+  flex: 1;
+  border: 1.5px solid var(--ornament-color);
+  border-radius: var(--border-radius-sm);
+  padding: 9px 10px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--color-bg-card);
+  color: var(--color-text);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.voice-select:focus { border-color: var(--color-consonantes); }
+
+.btn-probar {
+  background: var(--color-consonantes);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: 9px 14px;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform var(--transition), filter var(--transition);
+  min-height: 42px;
+}
+.btn-probar:hover  { filter: brightness(1.1); }
+.btn-probar:active { transform: scale(0.96); }
+
+.voice-status-text {
+  font-size: 0.78rem;
+  color: var(--color-text-light);
+  line-height: 1.4;
+  min-height: 18px;
+}
+
+/* Tip con fondo amarillo pálido — aparece cuando se detecta voz de España */
+.voice-tip {
+  background: #FFFBEA;
+  border-left: 3px solid var(--color-warning);
+  border-radius: 0 6px 6px 0;
+  padding: 8px 10px;
+  font-size: 0.76rem;
+  line-height: 1.55;
+  margin-top: 6px;
+  color: var(--ink);
+}
+[data-theme="dark"] .voice-tip {
+  background: #2C2A0A;
+  color: var(--color-text-light);
+}
+
 /* ── Lesson Card ── */
 .lesson-card {
   background: var(--color-bg-card);
