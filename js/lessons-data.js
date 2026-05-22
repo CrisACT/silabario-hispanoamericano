@@ -105,12 +105,22 @@ const LESSONS = SILABARIO_DATA.map(d => {
   let board = null;
   if (d.board) {
     const b = d.board;
-    const top = [b.topLeft, b.topRight].filter(Boolean);
-    const bottom = [b.bottomLeft, b.bottomCenter, b.bottomRight].filter(Boolean);
+    let top, bottom;
+    if (b.custom && b.custom.length > 0) {
+      // Lecciones especiales: terminaciones, diptongos, mayúsculas, etc.
+      const mid = Math.round(b.custom.length / 2);
+      top    = b.custom.slice(0, mid);
+      bottom = b.custom.slice(mid);
+    } else {
+      top    = [b.topLeft, b.topRight].filter(Boolean);
+      bottom = [b.bottomLeft, b.bottomCenter, b.bottomRight].filter(Boolean);
+    }
     board = {
-      letter: (d.letter || '').toUpperCase(),
+      // Usar b.letter (letra visual del tablero), no d.letter (clave interna)
+      letter: b.letter ? b.letter.toUpperCase() : null,
       top,
       bottom,
+      note: b.note || '',
     };
   }
 

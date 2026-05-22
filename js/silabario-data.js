@@ -1921,7 +1921,13 @@ const SILABARIO_DATA = [
       topLeft: "ka", topRight: "ke",
       bottomLeft: "ki", bottomCenter: "ko", bottomRight: "ku",
     },
-    pillar: [],
+    pillar: [
+      { n: 1,  word: "kilo",      syllables: ["ki","lo"],              emoji: "⚖️" },
+      { n: 2,  word: "kiosco",    syllables: ["kios","co"],            emoji: "🏪" },
+      { n: 3,  word: "kilómetro", syllables: ["ki","ló","me","tro"],   emoji: "📏" },
+      { n: 4,  word: "kaki",      syllables: ["ka","ki"],              emoji: "🎨" },
+      { n: 5,  word: "kárate",    syllables: ["ká","ra","te"],         emoji: "🥋" },
+    ],
     rails: [
       { text: "En  e-se  pa-que-te  hay  va-rias  co-sas:  un  ki-lo  de  que-so,  un  po-qui-to  de  té,  un  ki-lo  de  ca-fé  y  un  ki-lo  de  pan." },
       { text: "Mi  ca-mi-sa  es  de  co-lor  ka-ki  y  me  que-da  chi-ca." },
@@ -1952,7 +1958,14 @@ const SILABARIO_DATA = [
       topLeft: "ax", topRight: "ex",
       bottomLeft: "ix", bottomCenter: "ox", bottomRight: "ux",
     },
-    pillar: [],
+    pillar: [
+      { n: 1,  word: "examen",    syllables: ["e","xa","men"],          emoji: "📝" },
+      { n: 2,  word: "éxito",     syllables: ["é","xi","to"],           emoji: "🏆" },
+      { n: 3,  word: "excursión", syllables: ["ex","cur","sión"],       emoji: "🏔️" },
+      { n: 4,  word: "expreso",   syllables: ["ex","pre","so"],         emoji: "🚂" },
+      { n: 5,  word: "taxi",      syllables: ["tax","i"],               emoji: "🚕" },
+      { n: 6,  word: "Félix",     syllables: ["Fé","lix"],              emoji: "👦" },
+    ],
     rails: [
       { text: "E-se  ni-ño  se  lla-ma  Fé-lix  y  dió  un  ex-a-men  con  mu-cho  é-xi-to." },
       { text: "Mi  a-mi-go  Ca-lix-to  fué  a  u-na  ex-cur-sión  y  se  ex-tra-vió  en  el  ex-tre-mo  de  un  bos-que  muy  ex-ten-so." },

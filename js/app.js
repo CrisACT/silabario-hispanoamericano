@@ -167,12 +167,13 @@ function renderProgressPage() {
   const p  = getProgress();
   const tp = getTotalProgress();
 
-  const nameEl   = document.getElementById('prog-name');
-  const avatarEl = document.getElementById('prog-avatar');
-  const statsEl  = document.getElementById('prog-stats');
-  const barEl    = document.getElementById('prog-bar-fill');
-  const pctEl    = document.getElementById('prog-pct');
-  const trophyEl = document.getElementById('prog-trophies');
+  const nameEl    = document.getElementById('prog-name');
+  const avatarEl  = document.getElementById('prog-avatar');
+  const statsEl   = document.getElementById('prog-stats');
+  const barEl     = document.getElementById('prog-bar-fill');
+  const pctEl     = document.getElementById('prog-pct');
+  const trophyEl  = document.getElementById('prog-trophies');
+  const lessonsEl = document.getElementById('prog-lessons');
 
   if (nameEl)   nameEl.textContent   = p.child.name || 'Sin nombre';
   if (avatarEl) avatarEl.textContent = AVATARS[p.child.avatar] || '🐸';
@@ -180,6 +181,7 @@ function renderProgressPage() {
   if (pctEl)    pctEl.textContent    = `${tp.completed} / ${tp.total} lecciones (${tp.pct}%)`;
 
   if (statsEl) {
+    const totalStars = Object.values(p.lessons).reduce((acc, lp) => acc + (lp.stars || 0), 0);
     statsEl.innerHTML = `
       <div class="stat-card">
         <div class="stat-value">🔥${p.stats.currentStreak}</div>
@@ -190,10 +192,30 @@ function renderProgressPage() {
         <div class="stat-label">Lecciones</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">✏️${p.stats.wordsLearned}</div>
-        <div class="stat-label">Palabras</div>
+        <div class="stat-value">⭐${totalStars}</div>
+        <div class="stat-label">Estrellas</div>
       </div>
     `;
+  }
+
+  // Lesson breakdown grid
+  if (lessonsEl) {
+    lessonsEl.innerHTML = LESSONS.map(lesson => {
+      const lp    = getLessonProgress(lesson.id);
+      const stars = lp.stars || 0;
+      const locked = !lp.unlocked;
+      const done   = lp.completed;
+      const cls    = locked ? 'lpi-locked' : done ? 'lpi-done' : 'lpi-available';
+      const starsHTML = [1,2,3].map(i =>
+        `<span class="lpi-star${i <= stars ? ' earned' : ''}">★</span>`
+      ).join('');
+      return `
+        <div class="lesson-progress-item ${cls}" title="${lesson.title}" onclick="${!locked ? `openLesson(${lesson.id})` : ''}">
+          <div class="lpi-num">${lesson.id}</div>
+          <div class="lpi-emoji">${lesson.mainEmoji}</div>
+          <div class="lpi-stars">${starsHTML}</div>
+        </div>`;
+    }).join('');
   }
 
   if (trophyEl) {

@@ -34,6 +34,7 @@ function renderGameA() {
       <div class="game-progress-dots" id="game-dots-a">
         ${Array.from({length:ROUNDS_PER_GAME},(_,i)=>`<div class="progress-dot${i===0?' current':''}"></div>`).join('')}
       </div>
+      <div class="game-score-live" id="game-score-a">0 pts</div>
       <button class="play-sound-btn" id="play-sound-btn" onclick="playGameASound()">🔊</button>
       <div class="game-choices" id="game-choices"></div>
       <div style="height:20px"></div>
@@ -82,6 +83,7 @@ async function checkGameAAnswer(btn, chosen, target) {
     playCorrectSound();
     mascotCelebrate();
     _gameScore += 20;
+    _updateLiveScore('game-score-a');
     await new Promise(r => setTimeout(r, 800));
     _gameRound++;
     _advanceGame('A');
@@ -220,6 +222,10 @@ function renderGameC() {
       <div class="game-progress-dots" id="game-dots-c">
         ${Array.from({length:ROUNDS_PER_GAME},(_,i)=>`<div class="progress-dot${i===0?' current':''}"></div>`).join('')}
       </div>
+      <div class="game-score-live" id="game-score-c">0 pts</div>
+      <div class="game-listen-hint">
+        <button class="game-listen-again-btn" id="listen-again-btn" onclick="_replayGameC()">🔊 Escuchar de nuevo</button>
+      </div>
       <div class="image-choices" id="image-choices"></div>
     </div>
   `;
@@ -228,15 +234,32 @@ function renderGameC() {
 
 let _gameCTarget = null;
 
+// Banco de palabras de reserva para Game C cuando la lección tiene pocas palabras con emoji
+const GAME_C_FALLBACK = [
+  {word:"pato",emoji:"🦆"}, {word:"sol",emoji:"☀️"},
+  {word:"luna",emoji:"🌙"}, {word:"gato",emoji:"🐱"},
+  {word:"casa",emoji:"🏠"}, {word:"perro",emoji:"🐶"},
+  {word:"pez",emoji:"🐟"},  {word:"flor",emoji:"🌸"},
+];
+
+function _replayGameC() {
+  if (_gameCTarget) {
+    const btn = document.getElementById('listen-again-btn');
+    if (btn) btn.classList.add('playing');
+    speakSentence(_gameCTarget.word).then(() => {
+      if (btn) btn.classList.remove('playing');
+    });
+  }
+}
+
 function _setupGameCRound() {
-  const wordsPool = _getGameWords(8).filter(w => w.emoji);
+  // Reunir palabras con emoji de la lección + banco de reserva si hacen falta
+  let wordsPool = _getGameWords(12).filter(w => w.emoji);
   if (wordsPool.length < 4) {
-    // Fallback with emoji items
-    const fallback = [
-      {word:"pato",emoji:"🦆"},{word:"casa",emoji:"🏠"},
-      {word:"luna",emoji:"🌙"},{word:"sol",emoji:"☀️"},
-    ];
-    wordsPool.push(...fallback);
+    const needed = GAME_C_FALLBACK.filter(
+      f => !wordsPool.some(w => w.word === f.word)
+    );
+    wordsPool = [...wordsPool, ...needed];
   }
   const choices = shuffle(wordsPool).slice(0, 4);
   _gameCTarget = choices[Math.floor(Math.random() * choices.length)];
@@ -245,7 +268,8 @@ function _setupGameCRound() {
   if (el) {
     el.innerHTML = choices.map(w => `
       <button class="image-choice-btn" onclick="checkGameC(this,'${w.word}','${_gameCTarget.word}')">
-        ${w.emoji}
+        <span class="choice-emoji">${w.emoji}</span>
+        <span class="choice-label">${w.word}</span>
       </button>
     `).join('');
   }
@@ -266,14 +290,19 @@ async function checkGameC(btn, chosen, target) {
     playCorrectSound();
     mascotCelebrate();
     _gameScore += 20;
-    await new Promise(r => setTimeout(r, 800));
+    _updateLiveScore('game-score-c');
+    await new Promise(r => setTimeout(r, 900));
     _gameRound++;
     _advanceGame('C');
   } else {
     btn.classList.add('wrong');
     playWrongSound();
     mascotEncourage();
-    await new Promise(r => setTimeout(r, 1000));
+    // Highlight correct answer
+    btns.forEach(b => {
+      if (b.getAttribute('onclick')?.includes(`'${target}'`)) b.classList.add('correct');
+    });
+    await new Promise(r => setTimeout(r, 1200));
     btns.forEach(b => { b.classList.remove('wrong','correct'); b.disabled = false; });
     setTimeout(async () => await speakSentence(_gameCTarget.word), 200);
   }
@@ -305,6 +334,15 @@ function _advanceGame(game) {
   } else {
     if (game === 'A') _setupGameARound(_getGameSyllables());
     if (game === 'C') _setupGameCRound();
+  }
+}
+
+function _updateLiveScore(elId) {
+  const el = document.getElementById(elId);
+  if (el) {
+    el.textContent = `${_gameScore} pts`;
+    el.classList.add('score-bump');
+    setTimeout(() => el.classList.remove('score-bump'), 300);
   }
 }
 

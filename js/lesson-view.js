@@ -96,13 +96,22 @@ function renderTableroSection(lesson) {
     const bottomHTML = (b.bottom||[]).map(s => `
       <button class="syllable-btn light" onclick="tapSyllable(this,'${s}')">${s.toUpperCase()}</button>`).join('');
 
+    const centerHTML = b.letter
+      ? `<div class="tablero-center-row">
+           <div class="letter-center">${b.letter}</div>
+         </div>`
+      : '';
+
+    const noteHTML = b.note
+      ? `<div class="tablero-note">${b.note}</div>`
+      : '';
+
     boardHTML = `
       <div class="tablero-board">
         <div class="tablero-row">${topHTML}</div>
-        <div class="tablero-center-row">
-          <div class="letter-center">${b.letter}</div>
-        </div>
+        ${centerHTML}
         <div class="tablero-row">${bottomHTML}</div>
+        ${noteHTML}
       </div>`;
   }
 
