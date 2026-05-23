@@ -395,13 +395,28 @@ function _updateVoiceStatus(status, tip, LATAM_LANGS) {
 }
 
 function testSelectedVoice() {
+  const btn = document.getElementById('btn-probar');
   const frases = [
     'ma - má. Ma - má me a - ma.',
     'sa - la. La sa - la.',
     'pa - pa. El pa - pá.',
+    'mi - ma. La lu - na y el sol.',
   ];
   const frase = frases[Math.floor(Math.random() * frases.length)];
-  speakSentence(frase).catch(() => {});
+
+  if (btn) {
+    btn.disabled = true;
+    btn.classList.add('playing');
+    btn.textContent = '🔊 Reproduciendo…';
+  }
+
+  speakSentence(frase).catch(() => {}).finally(() => {
+    if (btn) {
+      btn.disabled = false;
+      btn.classList.remove('playing');
+      btn.textContent = '🔊 Probar esta voz';
+    }
+  });
 }
 
 function confirmReset() {
