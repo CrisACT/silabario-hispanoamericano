@@ -30,12 +30,12 @@ function renderGameA() {
   const syllables = _getGameSyllables();
   panel.innerHTML = `
     <div class="game-screen active" id="game-a-screen">
-      <div class="game-screen-title">🎧 ¿Cuál suena así?</div>
+      <div class="game-screen-title"><i class="fa-solid fa-headphones"></i> ¿Cuál suena así?</div>
       <div class="game-progress-dots" id="game-dots-a">
         ${Array.from({length:ROUNDS_PER_GAME},(_,i)=>`<div class="progress-dot${i===0?' current':''}"></div>`).join('')}
       </div>
       <div class="game-score-live" id="game-score-a">0 pts</div>
-      <button class="play-sound-btn" id="play-sound-btn" onclick="playGameASound()">🔊</button>
+      <button class="play-sound-btn" id="play-sound-btn" onclick="playGameASound()"><i class="fa-solid fa-volume-high"></i></button>
       <div class="game-choices" id="game-choices"></div>
       <div style="height:20px"></div>
     </div>
@@ -115,7 +115,7 @@ function renderGameB() {
   if (!panel) return;
   panel.innerHTML = `
     <div class="game-screen active" id="game-b-screen">
-      <div class="game-screen-title">🧩 Arma la palabra</div>
+      <div class="game-screen-title"><i class="fa-solid fa-puzzle-piece"></i> Arma la palabra</div>
       <div class="game-progress-dots" id="game-dots-b">
         ${Array.from({length:4},(_,i)=>`<div class="progress-dot${i===0?' current':''}"></div>`).join('')}
       </div>
@@ -140,7 +140,7 @@ function _setupGameBRound() {
   const slotsEl  = document.getElementById('word-slots');
   const tilesEl  = document.getElementById('syllable-tiles');
 
-  if (emojiEl) emojiEl.textContent = word.emoji || '📖';
+  if (emojiEl) emojiEl.innerHTML = word.emoji || '<i class="fa-solid fa-book-open" style="font-size:0.5em"></i>';
 
   if (slotsEl) {
     slotsEl.innerHTML = word.syllables.map((_,i) => `
@@ -218,13 +218,13 @@ function renderGameC() {
   if (!panel) return;
   panel.innerHTML = `
     <div class="game-screen active" id="game-c-screen">
-      <div class="game-screen-title">👂 Toca lo que escuchas</div>
+      <div class="game-screen-title"><i class="fa-solid fa-ear"></i> Toca lo que escuchas</div>
       <div class="game-progress-dots" id="game-dots-c">
         ${Array.from({length:ROUNDS_PER_GAME},(_,i)=>`<div class="progress-dot${i===0?' current':''}"></div>`).join('')}
       </div>
       <div class="game-score-live" id="game-score-c">0 pts</div>
       <div class="game-listen-hint">
-        <button class="game-listen-again-btn" id="listen-again-btn" onclick="_replayGameC()">🔊 Escuchar de nuevo</button>
+        <button class="game-listen-again-btn" id="listen-again-btn" onclick="_replayGameC()"><i class="fa-solid fa-volume-high"></i> Escuchar de nuevo</button>
       </div>
       <div class="image-choices" id="image-choices"></div>
     </div>
@@ -366,17 +366,17 @@ function _showGameResult(game, score) {
 
   panel.innerHTML = `
     <div class="game-result animate-fadein">
-      <div style="font-size:3rem">${game==='A'?'🎧':game==='B'?'🧩':'👂'}</div>
+      <div class="game-result-icon">${game==='A'?'<i class="fa-solid fa-headphones"></i>':game==='B'?'<i class="fa-solid fa-puzzle-piece"></i>':'<i class="fa-solid fa-ear"></i>'}</div>
       <div class="result-stars">
         ${'⭐'.repeat(stars)}${'☆'.repeat(3-stars)}
       </div>
       <div class="result-message">${msg}</div>
       <div style="color:var(--color-text-light);font-size:0.95rem">Puntaje: ${score}%</div>
       <button class="btn btn-success btn-full mt-24" onclick="returnToGamesMenu()">
-        ← Volver a juegos
+        <i class="fa-solid fa-arrow-left"></i> Volver a juegos
       </button>
       <button class="btn btn-primary btn-full mt-8" onclick="replayGame('${game}')">
-        🔄 Jugar de nuevo
+        <i class="fa-solid fa-rotate"></i> Jugar de nuevo
       </button>
     </div>
   `;

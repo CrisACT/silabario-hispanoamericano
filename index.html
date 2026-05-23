@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
@@ -26,7 +27,7 @@
       <div class="logo-tagline">Aprende a leer con el Silabario</div>
     </div>
     <div class="header-actions">
-      <button class="icon-btn" id="settings-btn" aria-label="Configuración">⚙️</button>
+      <button class="icon-btn" id="settings-btn" aria-label="Configuración"><i class="fa-solid fa-gear"></i></button>
     </div>
   </header>
 
@@ -60,9 +61,9 @@
         a millones de lectores.
       </p>
       <div class="hero-badges">
-        <span class="hero-badge">📚 48 lecciones</span>
-        <span class="hero-badge">🎮 Juegos interactivos</span>
-        <span class="hero-badge">🔊 Voz en español</span>
+        <span class="hero-badge"><i class="fa-solid fa-book-open"></i> 48 lecciones</span>
+        <span class="hero-badge"><i class="fa-solid fa-gamepad"></i> Juegos interactivos</span>
+        <span class="hero-badge"><i class="fa-solid fa-volume-high"></i> Voz en español</span>
       </div>
     </div>
 
@@ -88,7 +89,7 @@
 
   <!-- FAB Progreso -->
   <button class="fab" id="progress-fab" aria-label="Ver mi progreso">
-    📊 Mi progreso
+    <i class="fa-solid fa-chart-bar"></i> Mi progreso
   </button>
 
 </div>
@@ -131,19 +132,19 @@
   <!-- Navegación de secciones -->
   <nav class="section-nav" role="tablist" aria-label="Secciones de la lección">
     <button class="section-tab active" role="tab" onclick="renderSection(0)" aria-label="Conoce la letra">
-      <span class="tab-icon">📚</span>
+      <span class="tab-icon"><i class="fa-solid fa-font"></i></span>
       <span>Letra</span>
     </button>
     <button class="section-tab" role="tab" onclick="renderSection(1)" aria-label="Lee palabras">
-      <span class="tab-icon">📖</span>
+      <span class="tab-icon"><i class="fa-solid fa-book-open"></i></span>
       <span>Palabras</span>
     </button>
     <button class="section-tab" role="tab" onclick="renderSection(2)" aria-label="Lee frases">
-      <span class="tab-icon">💬</span>
+      <span class="tab-icon"><i class="fa-solid fa-align-left"></i></span>
       <span>Frases</span>
     </button>
     <button class="section-tab" role="tab" onclick="renderSection(3)" aria-label="¡A jugar!">
-      <span class="tab-icon">🎮</span>
+      <span class="tab-icon"><i class="fa-solid fa-gamepad"></i></span>
       <span>Juegos</span>
     </button>
   </nav>
@@ -156,7 +157,7 @@
 <div class="page" id="progress-page">
 
   <header class="app-header">
-    <button class="icon-btn" id="back-from-progress" aria-label="Volver">←</button>
+    <button class="icon-btn" id="back-from-progress" aria-label="Volver"><i class="fa-solid fa-arrow-left"></i></button>
     <h2 style="font-size:1.3rem;font-weight:900">Mi Progreso</h2>
     <div style="width:56px"></div>
   </header>
@@ -240,7 +241,7 @@
 
     <!-- Sección: Lectura -->
     <div class="settings-section">
-      <div class="settings-section-title">📖 Lectura</div>
+      <div class="settings-section-title"><i class="fa-solid fa-book"></i> Lectura</div>
 
       <div class="setting-row">
         <div class="setting-label-group">
@@ -269,7 +270,7 @@
 
     <!-- Sección: Apariencia -->
     <div class="settings-section">
-      <div class="settings-section-title">🎨 Apariencia</div>
+      <div class="settings-section-title"><i class="fa-solid fa-palette"></i> Apariencia</div>
 
       <div class="setting-row" style="border:none;padding-bottom:4px">
         <div class="setting-label-group">
@@ -285,14 +286,14 @@
 
     <!-- Sección: Voz -->
     <div class="settings-section">
-      <div class="settings-section-title">🎙️ Voz en español</div>
+      <div class="settings-section-title"><i class="fa-solid fa-microphone"></i> Voz en español</div>
 
       <div class="voice-selector-row">
         <select id="voice-selector" class="voice-select">
           <option value="">— Cargando voces… —</option>
         </select>
         <button class="btn-probar" id="btn-probar" onclick="testSelectedVoice()">
-          🔊 Probar esta voz
+          <i class="fa-solid fa-volume-high"></i> Probar esta voz
         </button>
       </div>
       <div id="voice-status" class="voice-status-text"></div>
@@ -301,21 +302,21 @@
 
     <!-- Sección: Perfil -->
     <div class="settings-section">
-      <div class="settings-section-title">👤 Mi perfil</div>
+      <div class="settings-section-title"><i class="fa-solid fa-user"></i> Mi perfil</div>
       <div class="settings-profile-row">
         <span id="settings-avatar" style="font-size:2.2rem;line-height:1">🐸</span>
         <span id="settings-name" style="flex:1;font-weight:800;font-size:1.05rem">---</span>
         <button class="btn btn-ghost" style="padding:8px 16px;min-height:40px"
-                onclick="closeSettings();openProfileModal()">✏️ Cambiar</button>
+                onclick="closeSettings();openProfileModal()"><i class="fa-solid fa-pencil"></i> Cambiar</button>
       </div>
     </div>
 
     <!-- Botones de acción -->
     <button class="btn btn-success btn-full mt-8" id="close-settings">
-      ✓ Guardar y cerrar
+      <i class="fa-solid fa-check"></i> Guardar y cerrar
     </button>
     <button class="btn btn-danger btn-full mt-8" onclick="confirmReset()">
-      🔄 Reiniciar todo el progreso
+      <i class="fa-solid fa-rotate"></i> Reiniciar todo el progreso
     </button>
 
   </div>

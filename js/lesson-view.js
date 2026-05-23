@@ -34,7 +34,7 @@ function renderLessonHeader(lesson) {
   const h = document.getElementById('lesson-header');
   if (!h) return;
   h.innerHTML = `
-    <button class="back-btn" onclick="goHome()" aria-label="Volver">←</button>
+    <button class="back-btn" onclick="goHome()" aria-label="Volver"><i class="fa-solid fa-arrow-left"></i></button>
     <div class="lesson-header-info">
       <h1>${lesson.mainEmoji} ${lesson.title}</h1>
       <span>${lesson.subtitle}</span>
@@ -142,14 +142,14 @@ function renderTableroSection(lesson) {
   } else {
     referenceHTML = `
       <div class="tablero-reference">
-        <div class="tablero-emoji">${lesson.mainEmoji || '📖'}</div>
+        <div class="tablero-emoji">${lesson.mainEmoji || '<i class="fa-solid fa-book-open" style="font-size:0.5em"></i>'}</div>
         <div class="tablero-word">${wordDisplay}</div>
       </div>`;
   }
 
   panel.innerHTML = `
     <div class="instruction-banner">
-      <span class="instruction-icon">👆</span>
+      <span class="instruction-icon"><i class="fa-solid fa-hand-pointer"></i></span>
       <span>Toca cada sílaba para escucharla</span>
     </div>
     <div class="tablero-container stagger-children">
@@ -157,14 +157,14 @@ function renderTableroSection(lesson) {
       ${boardHTML}
       <button class="listen-all-btn" id="listen-all-btn"
               onclick="listenAll()">
-        🔊 ESCUCHAR TODO
+        <i class="fa-solid fa-volume-high"></i> ESCUCHAR TODO
       </button>
     </div>
     <div class="tips-panel hidden" id="tips-panel">
-      <strong>💡 Para el adulto:</strong> ${lesson.tips || 'Señale cada sílaba y diga su sonido.'}
+      <strong><i class="fa-solid fa-lightbulb"></i> Para el adulto:</strong> ${lesson.tips || 'Señale cada sílaba y diga su sonido.'}
     </div>
     <button class="btn btn-ghost btn-full mt-8" onclick="toggleTips()">
-      ℹ️ Consejos para adultos
+      <i class="fa-solid fa-circle-info"></i> Consejos para adultos
     </button>
   `;
 
@@ -232,14 +232,14 @@ function renderPilarSection(lesson) {
         ${visualHTML}
         <button class="btn btn-ghost" style="padding:8px 12px;min-height:40px;box-shadow:none;font-size:1rem"
                 onclick="event.stopPropagation();tapPilarItem(this.closest('.pilar-item'),'${item.syllables.join(',')}','${item.word}','${item.emoji||''}')">
-          🔊
+          <i class="fa-solid fa-volume-high"></i>
         </button>
       </li>`;
   }).join('');
 
   panel.innerHTML = `
     <div class="instruction-banner">
-      <span class="instruction-icon">📖</span>
+      <span class="instruction-icon"><i class="fa-solid fa-book-open"></i></span>
       <span>Toca cada palabra para escucharla</span>
     </div>
     <ul class="pilar-list stagger-children">${items}</ul>
@@ -274,14 +274,14 @@ function renderRailsSection(lesson) {
         <div class="rail-text">${wordsHTML}</div>
         <button class="rail-listen-btn" id="rail-btn-${ri}"
                 onclick="listenRail(${ri},'${rail.text.replace(/'/g,"\\'")}')">
-          🔊 Escuchar frase
+          <i class="fa-solid fa-volume-high"></i> Escuchar frase
         </button>
       </div>`;
   }).join('');
 
   panel.innerHTML = `
     <div class="instruction-banner">
-      <span class="instruction-icon">💬</span>
+      <span class="instruction-icon"><i class="fa-solid fa-quote-right"></i></span>
       <span>Toca el altavoz para escuchar la frase</span>
     </div>
     <div class="rails-list">${rails}</div>
@@ -329,14 +329,14 @@ function renderGamesMenu() {
   const scores = lp.gameScores || [0, 0, 0];
 
   const games = [
-    { id:'A', icon:'🎧', title:'¿Cuál suena así?',    desc:'Escucha la sílaba y toca la correcta',    color:'#3498DB', fn:'startGameA()' },
-    { id:'B', icon:'🧩', title:'Arma la palabra',      desc:'Pon las sílabas en orden',                 color:'#27AE60', fn:'startGameB()' },
-    { id:'C', icon:'👂', title:'Toca lo que escuchas', desc:'Escucha la palabra y toca la imagen',      color:'#E67E22', fn:'startGameC()' },
+    { id:'A', icon:'<i class="fa-solid fa-headphones"></i>', title:'¿Cuál suena así?',    desc:'Escucha la sílaba y toca la correcta',    color:'#3498DB', fn:'startGameA()' },
+    { id:'B', icon:'<i class="fa-solid fa-puzzle-piece"></i>', title:'Arma la palabra',      desc:'Pon las sílabas en orden',                 color:'#27AE60', fn:'startGameB()' },
+    { id:'C', icon:'<i class="fa-solid fa-ear"></i>', title:'Toca lo que escuchas', desc:'Escucha la palabra y toca la imagen',      color:'#E67E22', fn:'startGameC()' },
   ];
 
   panel.innerHTML = `
     <div class="instruction-banner">
-      <span class="instruction-icon">🎮</span>
+      <span class="instruction-icon"><i class="fa-solid fa-gamepad"></i></span>
       <span>¡Elige un juego para practicar!</span>
     </div>
     <div class="games-menu stagger-children">
@@ -346,7 +346,7 @@ function renderGamesMenu() {
           <div class="game-info">
             <div class="game-title">${g.title}</div>
             <div class="game-desc">${g.desc}</div>
-            ${scores[i] > 0 ? `<div style="color:var(--color-star);font-weight:700;margin-top:4px">⭐ Mejor: ${scores[i]}%</div>` : ''}
+            ${scores[i] > 0 ? `<div style="color:var(--color-star);font-weight:700;margin-top:4px"><i class="fa-solid fa-star"></i> Mejor: ${scores[i]}%</div>` : ''}
           </div>
         </div>
       `).join('')}

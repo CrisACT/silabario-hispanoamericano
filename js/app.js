@@ -99,7 +99,7 @@ function renderLessonsGrid() {
       <div class="lesson-card ${statusClass}"
            style="color:${locked?'var(--color-locked)':lesson.color}"
            onclick="openLesson(${lesson.id})">
-        ${locked ? '<div class="lock-overlay">🔒</div>' : ''}
+        ${locked ? '<div class="lock-overlay"><i class="fa-solid fa-lock"></i></div>' : ''}
         <div class="card-number">Lección ${lesson.id}</div>
         <div class="card-emoji">${lesson.mainEmoji}</div>
         <div class="card-title" style="color:${locked?'var(--color-text-light)':lesson.color}">${lesson.title}</div>
@@ -407,14 +407,14 @@ function testSelectedVoice() {
   if (btn) {
     btn.disabled = true;
     btn.classList.add('playing');
-    btn.textContent = '🔊 Reproduciendo…';
+    btn.innerHTML = '<i class="fa-solid fa-volume-high"></i> Reproduciendo…';
   }
 
   speakSentence(frase).catch(() => {}).finally(() => {
     if (btn) {
       btn.disabled = false;
       btn.classList.remove('playing');
-      btn.textContent = '🔊 Probar esta voz';
+      btn.innerHTML = '<i class="fa-solid fa-volume-high"></i> Probar esta voz';
     }
   });
 }

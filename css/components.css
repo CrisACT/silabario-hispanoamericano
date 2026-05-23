@@ -2,6 +2,17 @@
    COMPONENTES — Silabario Hispanoamericano
    ============================================ */
 
+/* ── Font Awesome icons: consistent inline alignment ── */
+.fa-solid, .fa-regular, .fa-brands {
+  vertical-align: middle;
+  line-height: 1;
+}
+/* Icon inside .game-icon-big inherits 3rem, keep it clean */
+.game-icon-big .fa-solid {
+  display: inline-block;
+  color: var(--game-color, currentColor);
+}
+
 /* ══════════════════════════════════════════
    SETTINGS MODAL — rediseño
    ══════════════════════════════════════════ */
@@ -939,6 +950,14 @@
   border-color: var(--color-vocales);
   background: #FADBD8;
   animation: shake 0.5s ease-in-out;
+}
+
+/* ── Game result icon (FA icon replacing emoji) ── */
+.game-result-icon {
+  font-size: 3rem;
+  line-height: 1;
+  text-align: center;
+  color: var(--lesson-color, var(--color-consonantes));
 }
 
 /* ── Game result screen ── */
