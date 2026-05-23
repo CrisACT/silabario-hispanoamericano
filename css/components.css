@@ -209,13 +209,17 @@
 
 .lock-overlay {
   position: absolute;
-  inset: 0;
+  bottom: 8px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  background: rgba(255,255,255,0.3);
-  border-radius: calc(var(--border-radius-md) - 3px);
+  font-size: 0.8rem;
+  background: rgba(120,120,120,0.2);
+  border-radius: 50%;
+  color: var(--color-text-light);
 }
 
 .card-emoji {
