@@ -67,6 +67,14 @@
   --shadow-card:  0 3px 16px rgba(0,0,0,0.5);
 }
 
+[data-theme="dark"] .hero-section {
+  background: linear-gradient(160deg, #1C1208 0%, #241A0A 100%);
+}
+[data-theme="dark"] .hero-badge {
+  background: #2C1E0A;
+  border-color: rgba(200,169,110,0.3);
+}
+
 /* ── Reset & Base ── */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -148,21 +156,42 @@ p  { line-height: 1.6; }
   border-bottom: var(--border-vintage);
 }
 
+/* ── Brand + tagline ── */
+.header-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  min-width: 0;
+}
+
 /* Logo vintage con tipografía de libro */
 .logo-text {
   font-family: var(--font-display);
-  font-size: 1.7rem;
+  font-size: 1.6rem;
   font-weight: 900;
   letter-spacing: -0.5px;
   color: var(--ink);
   display: flex;
   align-items: baseline;
   gap: 1px;
+  white-space: nowrap;
 }
-.logo-text .logo-sil { color: var(--color-vocales); }
-.logo-text .logo-sep { color: var(--ornament-color); font-size: 1.2rem; margin: 0 2px; }
+.logo-text .logo-sil  { color: var(--color-vocales); }
+.logo-text .logo-sep  { color: var(--ornament-color); font-size: 1.1rem; margin: 0 2px; }
 .logo-text .logo-ario { color: var(--color-consonantes); }
 .logo-text .logo-excl { color: var(--ornament-color); }
+
+.logo-tagline {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--ink-light);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
 
 .header-actions {
   display: flex;
@@ -202,20 +231,158 @@ p  { line-height: 1.6; }
   transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ── Portada splash en bienvenida ── */
-.portada-section {
-  display: flex;
-  justify-content: center;
-  padding: 16px 20px 0;
+/* ══════════════════════════════════════════
+   HERO SECTION — portada + descripción del libro
+══════════════════════════════════════════ */
+.hero-section {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: start;
+  padding: 20px 18px 14px;
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--paper) 100%, transparent) 0%,
+    color-mix(in srgb, var(--paper-dark) 100%, transparent) 100%
+  );
+  border-bottom: var(--border-vintage);
+  position: relative;
 }
-.portada-img {
-  width: 120px;
+
+/* Ornamento de fondo sutil */
+.hero-section::before {
+  content: '✦';
+  position: absolute;
+  right: 16px;
+  top: 12px;
+  font-size: 0.8rem;
+  color: var(--ornament-color);
+  opacity: 0.3;
+}
+
+/* Columna de la portada */
+.hero-book-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.hero-book-frame {
+  position: relative;
+  display: inline-flex;
+}
+
+.portada-img,
+.hero-portada-img {
+  width: 100px;
   height: auto;
-  border-radius: 10px;
-  box-shadow: 4px 4px 16px var(--sepia), var(--shadow-vintage);
+  border-radius: 8px;
+  box-shadow: 4px 6px 18px var(--sepia), var(--shadow-vintage);
   border: 2px solid var(--ornament-color);
   filter: contrast(1.05) brightness(1.02);
+  display: block;
 }
+
+/* Etiqueta del año */
+.hero-year-tag {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ornament-color);
+  color: var(--paper);
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Columna de información */
+.hero-info-side {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.hero-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--ornament-color);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  line-height: 1;
+}
+
+.hero-book-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.hero-author {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-light);
+  font-style: italic;
+  letter-spacing: 0.3px;
+}
+
+.hero-divider {
+  height: 1px;
+  background: var(--ornament-color);
+  opacity: 0.35;
+  margin: 2px 0;
+}
+
+.hero-desc {
+  font-size: 0.78rem;
+  color: var(--color-text-light);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.hero-badge {
+  background: var(--paper-dark);
+  border: 1px solid rgba(200,169,110,0.5);
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--ink-light);
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
+/* ── Mobile: hero stack vertical en pantallas muy pequeñas ── */
+@media (max-width: 380px) {
+  .hero-section {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    gap: 14px;
+    padding: 16px 14px 12px;
+  }
+  .hero-info-side { align-items: center; }
+  .hero-badges    { justify-content: center; }
+  .hero-eyebrow   { text-align: center; }
+}
+
+/* ── Welcome section ── */
 
 /* ── Welcome section ── */
 .welcome-section {
@@ -454,12 +621,15 @@ p  { line-height: 1.6; }
   }
 
   /* Header más compacto */
-  .app-header { padding: 8px 14px; }
-  .logo-text  { font-size: 1.4rem; }
+  .app-header   { padding: 8px 14px; }
+  .logo-text    { font-size: 1.35rem; }
+  .logo-tagline { font-size: 0.6rem; max-width: 170px; }
 
-  /* Portada más pequeña */
-  .portada-img { width: 90px; }
-  .portada-section { padding: 10px 14px 0; }
+  /* Hero compacto en móvil */
+  .hero-portada-img { width: 80px; }
+  .hero-book-title  { font-size: 1.05rem; }
+  .hero-desc        { font-size: 0.72rem; }
+  .hero-section     { gap: 14px; padding: 14px 12px 10px; }
 
   /* Welcome más compacto */
   .welcome-section { padding: 10px 14px 8px; gap: 10px; }
@@ -492,7 +662,10 @@ p  { line-height: 1.6; }
     --font-size-syllable: 34px;
     --font-size-letter:   52px;
   }
-  .logo-text { font-size: 1.2rem; }
+  .logo-text    { font-size: 1.15rem; }
+  .logo-tagline { font-size: 0.55rem; max-width: 140px; }
+  .hero-portada-img { width: 70px; }
+  .hero-book-title  { font-size: 0.95rem; }
 }
 
 /* Pantallas grandes (tablet+): ampliar a 3 columnas */

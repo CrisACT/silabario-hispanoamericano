@@ -19,8 +19,11 @@
 
   <!-- Header -->
   <header class="app-header">
-    <div class="logo-text" aria-label="Silabario">
-      <span class="logo-sil">Sil</span><span class="logo-sep">·</span><span class="logo-ario">abario</span><span class="logo-excl">!</span>
+    <div class="header-brand">
+      <div class="logo-text" aria-label="Silabario">
+        <span class="logo-sil">Sil</span><span class="logo-sep">·</span><span class="logo-ario">abario</span><span class="logo-excl">!</span>
+      </div>
+      <div class="logo-tagline">Aprende a leer con el Silabario</div>
     </div>
     <div class="header-actions">
       <button class="icon-btn" id="settings-btn" aria-label="Configuración">⚙️</button>
@@ -32,15 +35,40 @@
     <div class="global-progress-fill" id="global-progress-fill" style="width:0%"></div>
   </div>
 
-  <!-- Portada del libro -->
-  <div class="portada-section">
-    <img src="assets/ilustraciones/portada/portada.png"
-         alt="Silabario Hispanoamericano — Adrián Dufflocq G."
-         class="portada-img"
-         onerror="this.style.display='none'">
-  </div>
+  <!-- ─── HERO: Portada + descripción del libro ─── -->
+  <section class="hero-section" aria-label="Sobre el Silabario">
 
-  <!-- Bienvenida -->
+    <div class="hero-book-side">
+      <div class="hero-book-frame">
+        <img src="assets/ilustraciones/portada/portada.png"
+             alt="Portada del Silabario Hispanoamericano"
+             class="portada-img hero-portada-img"
+             onerror="this.parentElement.style.display='none'">
+        <div class="hero-year-tag">1945</div>
+      </div>
+    </div>
+
+    <div class="hero-info-side">
+      <p class="hero-eyebrow">✦ Basado en el histórico ✦</p>
+      <h2 class="hero-book-title">Silabario<br>Hispanoamericano</h2>
+      <p class="hero-author">Adrián Dufflocq Galdames</p>
+      <div class="hero-divider"></div>
+      <p class="hero-desc">
+        El libro que enseñó a leer a generaciones de niños de Hispanoamérica.
+        Publicado en Chile en 1945, fue adoptado por escuelas de toda
+        la región durante más de medio siglo — un clásico que formó
+        a millones de lectores.
+      </p>
+      <div class="hero-badges">
+        <span class="hero-badge">📚 48 lecciones</span>
+        <span class="hero-badge">🎮 Juegos interactivos</span>
+        <span class="hero-badge">🔊 Voz en español</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Bienvenida personalizada -->
   <section class="welcome-section">
     <div class="welcome-text">
       <span id="welcome-avatar" style="font-size:2rem"></span>
