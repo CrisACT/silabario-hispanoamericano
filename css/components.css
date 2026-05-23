@@ -864,7 +864,21 @@
 .play-sound-btn.playing { animation: audioPulse 1s ease-in-out infinite; }
 
 /* Game B — Build word */
-.build-image { font-size: 80px; text-align: center; line-height: 1; }
+.build-image {
+  font-size: 80px;
+  text-align: center;
+  line-height: 1;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.game-word-img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  border-radius: 12px;
+}
 
 .word-slots {
   display: flex;
@@ -1119,17 +1133,20 @@
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
 }
 
-/* ── Ilustraciones del libro original ── */
+/* ── Ilustraciones (scaneadas o OpenMoji) ── */
 .lesson-illustration {
-  filter: contrast(1.1) brightness(1.05);
   border-radius: 8px;
-  background-color: #FFF9E6;
-  padding: 8px;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.15), 1px 1px 0 rgba(200,169,110,0.3);
+  background-color: transparent;
+  padding: 4px;
+}
+/* Imágenes del pilar (word-image) — sin fondo para que el SVG brille */
+.word-image.lesson-illustration {
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0;
 }
 [data-theme="dark"] .lesson-illustration {
-  background-color: #2a2010;
-  filter: contrast(1.05) brightness(0.85);
+  background-color: transparent;
 }
 
 /* Imagen principal en el tablero */
@@ -1335,6 +1352,12 @@
   padding: 12px 8px;
 }
 .choice-emoji { font-size: 3rem; line-height: 1; }
+.choice-img {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  border-radius: 8px;
+}
 .choice-label {
   font-size: 0.8rem;
   font-weight: 800;

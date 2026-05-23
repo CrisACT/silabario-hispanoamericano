@@ -3,6 +3,20 @@
    Usa silabario-data.js como fuente de verdad del libro.
    ============================================ */
 
+/* Helper: convierte un emoji en URL de ilustración SVG de OpenMoji (open source, CC BY-SA 4.0) */
+function emojiToOpenMojiUrl(emoji) {
+  if (!emoji || typeof emoji !== 'string') return null;
+  try {
+    const codePoints = [...emoji]
+      .map(c => c.codePointAt(0))
+      .filter(cp => cp !== 0xFE0F && cp !== 0x20E3) // quitar variation selector y combining keycap
+      .map(cp => cp.toString(16).toUpperCase());
+    return codePoints.length
+      ? `https://openmoji.org/data/color/svg/${codePoints.join('-')}.svg`
+      : null;
+  } catch (_) { return null; }
+}
+
 /* ----------- mapa de clave de ilustración por id de lección ----------- */
 const ILLUS_KEY = {
    0: 'leccion_00_vocales',
@@ -84,8 +98,8 @@ const LESSONS = SILABARIO_DATA.map(d => {
     syllables: item.syllables,
     word:      item.word,
     emoji:     item.emoji || '',
-    // Imagen del libro si existe, emoji como fallback
-    img:       getWordImg(d.id, item.word),
+    // Prioridad: imagen local del libro → ilustración OpenMoji del emoji
+    img:       getWordImg(d.id, item.word) || emojiToOpenMojiUrl(item.emoji),
     highlight: item.syllables.length > 2,
   }));
 
@@ -137,7 +151,7 @@ const LESSONS = SILABARIO_DATA.map(d => {
     letter:         d.letter,
     mainEmoji:      d.mainEmoji,
     mainWord:       d.mainWord,
-    mainImg:        getLessonMainImg(d.id),
+    mainImg:        getLessonMainImg(d.id) || emojiToOpenMojiUrl(d.mainEmoji),
     boardImg:       getLessonBoardImg(d.id),
     color:          d.color,
     colorLight:     d.colorLight,

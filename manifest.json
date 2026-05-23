@@ -1,0 +1,31 @@
+{
+  "name": "Silabario Interactivo",
+  "short_name": "Silabario",
+  "description": "Aprende a leer en español con el método fonético silábico",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF8E7",
+  "theme_color": "#C8A96E",
+  "orientation": "portrait-primary",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='32' fill='%23C8A96E'/><text x='96' y='148' text-anchor='middle' font-size='130' font-family='Georgia,serif' font-weight='bold' fill='%23FFF8E7'>S</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='80' fill='%23C8A96E'/><text x='256' y='390' text-anchor='middle' font-size='340' font-family='Georgia,serif' font-weight='bold' fill='%23FFF8E7'>S</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["education", "kids"],
+  "shortcuts": [
+    {
+      "name": "Lección 1 — La P",
+      "url": "/?lesson=1",
+      "description": "Ir a la primera lección"
+    }
+  ]
+}

@@ -6,6 +6,11 @@
   <meta name="description" content="Silabario Hispanoamericano interactivo para aprender a leer en español">
   <title>Silabario Hispanoamericano</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23C8A96E'/><text x='16' y='24' text-anchor='middle' font-size='22' font-family='Georgia,serif' font-weight='bold' fill='%23FFF8E7'>S</text></svg>">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#C8A96E">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Silabario">
 
   <link rel="stylesheet" href="css/styles.css?v=4">
   <link rel="stylesheet" href="css/components.css?v=4">
@@ -344,6 +349,15 @@
 <script src="js/games.js?v=4"></script>
 <script src="js/lesson-view.js?v=4"></script>
 <script src="js/app.js?v=4"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .catch(err => console.warn('SW no disponible:', err));
+    });
+  }
+</script>
 
 </body>
 </html>

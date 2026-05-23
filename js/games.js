@@ -140,7 +140,14 @@ function _setupGameBRound() {
   const slotsEl  = document.getElementById('word-slots');
   const tilesEl  = document.getElementById('syllable-tiles');
 
-  if (emojiEl) emojiEl.innerHTML = word.emoji || '<i class="fa-solid fa-book-open" style="font-size:0.5em"></i>';
+  if (emojiEl) {
+    if (word.img) {
+      emojiEl.innerHTML = `<img src="${word.img}" alt="${word.word}" class="game-word-img"
+        onerror="this.outerHTML='<span>${word.emoji || '📖'}</span>'">`;
+    } else {
+      emojiEl.innerHTML = word.emoji || '<i class="fa-solid fa-book-open" style="font-size:0.5em"></i>';
+    }
+  }
 
   if (slotsEl) {
     slotsEl.innerHTML = word.syllables.map((_,i) => `
@@ -234,12 +241,21 @@ function renderGameC() {
 
 let _gameCTarget = null;
 
-// Banco de palabras de reserva para Game C cuando la lección tiene pocas palabras con emoji
+// Banco de palabras de reserva para Game C cuando la lección tiene pocas palabras
+const _om = e => { try { const cp = [...e].map(c=>c.codePointAt(0)).filter(c=>c!==0xFE0F&&c!==0x20E3).map(c=>c.toString(16).toUpperCase()); return `https://openmoji.org/data/color/svg/${cp.join('-')}.svg`; } catch(_){return null;} };
 const GAME_C_FALLBACK = [
-  {word:"pato",emoji:"🦆"}, {word:"sol",emoji:"☀️"},
-  {word:"luna",emoji:"🌙"}, {word:"gato",emoji:"🐱"},
-  {word:"casa",emoji:"🏠"}, {word:"perro",emoji:"🐶"},
-  {word:"pez",emoji:"🐟"},  {word:"flor",emoji:"🌸"},
+  {word:"pato",   emoji:"🦆", img:_om("🦆")},
+  {word:"sol",    emoji:"☀️", img:_om("☀️")},
+  {word:"luna",   emoji:"🌙", img:_om("🌙")},
+  {word:"gato",   emoji:"🐱", img:_om("🐱")},
+  {word:"casa",   emoji:"🏠", img:_om("🏠")},
+  {word:"perro",  emoji:"🐶", img:_om("🐶")},
+  {word:"pez",    emoji:"🐟", img:_om("🐟")},
+  {word:"flor",   emoji:"🌸", img:_om("🌸")},
+  {word:"árbol",  emoji:"🌳", img:_om("🌳")},
+  {word:"libro",  emoji:"📚", img:_om("📚")},
+  {word:"pelota", emoji:"⚽", img:_om("⚽")},
+  {word:"manzana",emoji:"🍎", img:_om("🍎")},
 ];
 
 function _replayGameC() {
@@ -253,8 +269,8 @@ function _replayGameC() {
 }
 
 function _setupGameCRound() {
-  // Reunir palabras con emoji de la lección + banco de reserva si hacen falta
-  let wordsPool = _getGameWords(12).filter(w => w.emoji);
+  // Reunir palabras con emoji o imagen de la lección + banco de reserva si hacen falta
+  let wordsPool = _getGameWords(12).filter(w => w.emoji || w.img);
   if (wordsPool.length < 4) {
     const needed = GAME_C_FALLBACK.filter(
       f => !wordsPool.some(w => w.word === f.word)
@@ -266,12 +282,18 @@ function _setupGameCRound() {
 
   const el = document.getElementById('image-choices');
   if (el) {
-    el.innerHTML = choices.map(w => `
-      <button class="image-choice-btn" onclick="checkGameC(this,'${w.word}','${_gameCTarget.word}')">
-        <span class="choice-emoji">${w.emoji}</span>
-        <span class="choice-label">${w.word}</span>
-      </button>
-    `).join('');
+    el.innerHTML = choices.map(w => {
+      const imgHtml = w.img
+        ? `<img src="${w.img}" alt="${w.word}" class="choice-img"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+           <span class="choice-emoji" style="display:none">${w.emoji || '🖼️'}</span>`
+        : `<span class="choice-emoji">${w.emoji || '🖼️'}</span>`;
+      return `
+        <button class="image-choice-btn" onclick="checkGameC(this,'${w.word}','${_gameCTarget.word}')">
+          ${imgHtml}
+          <span class="choice-label">${w.word}</span>
+        </button>`;
+    }).join('');
   }
 
   setTimeout(async () => {
