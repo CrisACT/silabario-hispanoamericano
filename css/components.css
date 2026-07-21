@@ -868,16 +868,20 @@
   font-size: 80px;
   text-align: center;
   line-height: 1;
-  min-height: 90px;
+  min-height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--color-bg-card);
+  border-radius: var(--border-radius-lg);
+  border: 3px solid var(--lesson-color, var(--color-consonantes));
+  box-shadow: var(--shadow-card);
+  margin-bottom: 4px;
 }
 .game-word-img {
-  width: 90px;
-  height: 90px;
+  width: 130px;
+  height: 130px;
   object-fit: contain;
-  border-radius: 12px;
 }
 
 .word-slots {
@@ -1351,15 +1355,14 @@
   gap: 6px;
   padding: 12px 8px;
 }
-.choice-emoji { font-size: 3rem; line-height: 1; }
+.choice-emoji { font-size: 3.6rem; line-height: 1; }
 .choice-img {
-  width: 76px;
-  height: 76px;
+  width: 96px;
+  height: 96px;
   object-fit: contain;
-  border-radius: 8px;
 }
 .choice-label {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 800;
   color: var(--color-text);
   text-align: center;
@@ -1422,12 +1425,14 @@
   /* Games */
   .game-choice-btn   { font-size: 1.6rem; padding: 14px 6px; min-height: 72px; }
   .play-sound-btn    { width: 82px; height: 82px; font-size: 2rem; }
-  .build-image       { font-size: 60px; }
+  .build-image       { font-size: 60px; min-height: 110px; }
+  .game-word-img     { width: 92px; height: 92px; }
   .word-slot         { min-width: 58px; height: 58px; font-size: 1.4rem; }
   .syllable-tile     { font-size: 1.2rem; padding: 10px 14px; }
-  .image-choice-btn  { aspect-ratio: auto; min-height: 90px; }
-  .choice-emoji      { font-size: 2.4rem; }
-  .choice-label      { font-size: 0.72rem; }
+  .image-choice-btn  { aspect-ratio: auto; min-height: 100px; }
+  .choice-emoji      { font-size: 2.6rem; }
+  .choice-img        { width: 72px; height: 72px; }
+  .choice-label      { font-size: 0.75rem; }
 
   /* Progress page */
   .stats-row       { gap: 8px; }

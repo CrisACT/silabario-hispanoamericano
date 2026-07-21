@@ -16,10 +16,15 @@ function initGames(lesson) {
    JUEGO A — ¿Cuál suena así? (Auditivo)
 ══════════════════════════════════════════ */
 
+let _gameABag = [];
+let _lastGameATarget = null;
+
 function startGameA() {
   _currentGame = 'A';
   _gameScore   = 0;
   _gameRound   = 0;
+  _gameABag    = [];
+  _lastGameATarget = null;
   renderGameA();
 }
 
@@ -44,8 +49,19 @@ function renderGameA() {
 }
 
 function _setupGameARound(syllables) {
-  const syl   = shuffle([...syllables]).slice(0, 3);
-  const target = syl[Math.floor(Math.random() * syl.length)];
+  const unique = [...new Set(syllables)];
+
+  // Bolsa sin repetición: cada sílaba se usa como respuesta correcta una vez
+  // antes de volver a aparecer, para no confundir al niño con la misma sílaba seguida.
+  if (_gameABag.length === 0) {
+    _gameABag = _refillBag(unique, _lastGameATarget);
+  }
+  const target = _gameABag.shift();
+  _lastGameATarget = target;
+
+  const distractors = shuffle(unique.filter(s => s !== target)).slice(0, 2);
+  const syl = shuffle([target, ...distractors]);
+
   const choices = document.getElementById('game-choices');
   const playBtn = document.getElementById('play-sound-btn');
 
@@ -103,10 +119,15 @@ async function checkGameAAnswer(btn, chosen, target) {
    JUEGO B — Arma la palabra
 ══════════════════════════════════════════ */
 
+let _gameBBag = [];
+let _lastGameBTarget = null;
+
 function startGameB() {
   _currentGame = 'B';
   _gameScore   = 0;
   _gameRound   = 0;
+  _gameBBag    = [];
+  _lastGameBTarget = null;
   renderGameB();
 }
 
@@ -131,8 +152,14 @@ let _buildAnswer = [];
 let _buildTarget = null;
 
 function _setupGameBRound() {
-  const words = _getGameWords(4);
-  const word  = words[_gameRound % words.length];
+  // Bolsa sin repetición: cada palabra de la lección se practica una vez
+  // antes de volver a aparecer, para no armar la misma palabra dos veces seguidas.
+  if (_gameBBag.length === 0) {
+    const pool = _dedupeWords(_currentLesson?.gameWords || []);
+    _gameBBag = _refillBag(pool, _lastGameBTarget, w => w.word);
+  }
+  const word = _gameBBag.shift();
+  _lastGameBTarget = word;
   _buildTarget  = word;
   _buildAnswer  = [];
 
@@ -213,11 +240,27 @@ async function tapTileB(btn, syl) {
    JUEGO C — Toca lo que escuchas
 ══════════════════════════════════════════ */
 
+let _gameCPool = [];
+let _gameCBag  = [];
+let _lastGameCTarget = null;
+
 function startGameC() {
   _currentGame = 'C';
   _gameScore   = 0;
   _gameRound   = 0;
+  _gameCPool   = _buildGameCPool();
+  _gameCBag    = [];
+  _lastGameCTarget = null;
   renderGameC();
+}
+
+function _buildGameCPool() {
+  let pool = _dedupeWords((_currentLesson?.gameWords || []).filter(w => w.emoji || w.img));
+  if (pool.length < 4) {
+    const needed = GAME_C_FALLBACK.filter(f => !pool.some(w => w.word === f.word));
+    pool = _dedupeWords([...pool, ...needed]);
+  }
+  return pool;
 }
 
 function renderGameC() {
@@ -242,6 +285,7 @@ function renderGameC() {
 let _gameCTarget = null;
 
 // Banco de palabras de reserva para Game C cuando la lección tiene pocas palabras
+// (declarado más abajo, se usa dentro de _buildGameCPool)
 const _om = e => { try { const cp = [...e].map(c=>c.codePointAt(0)).filter(c=>c!==0xFE0F&&c!==0x20E3).map(c=>c.toString(16).toUpperCase()); return `https://openmoji.org/data/color/svg/${cp.join('-')}.svg`; } catch(_){return null;} };
 const GAME_C_FALLBACK = [
   {word:"pato",   emoji:"🦆", img:_om("🦆")},
@@ -269,16 +313,17 @@ function _replayGameC() {
 }
 
 function _setupGameCRound() {
-  // Reunir palabras con emoji o imagen de la lección + banco de reserva si hacen falta
-  let wordsPool = _getGameWords(12).filter(w => w.emoji || w.img);
-  if (wordsPool.length < 4) {
-    const needed = GAME_C_FALLBACK.filter(
-      f => !wordsPool.some(w => w.word === f.word)
-    );
-    wordsPool = [...wordsPool, ...needed];
+  // Bolsa sin repetición: cada palabra se usa como respuesta correcta una vez
+  // antes de volver a aparecer, para no repetir la misma imagen seguida.
+  if (_gameCBag.length === 0) {
+    _gameCBag = _refillBag(_gameCPool, _lastGameCTarget, w => w.word);
   }
-  const choices = shuffle(wordsPool).slice(0, 4);
-  _gameCTarget = choices[Math.floor(Math.random() * choices.length)];
+  _gameCTarget = _gameCBag.shift();
+  _lastGameCTarget = _gameCTarget;
+
+  // 4 opciones: la respuesta correcta + hasta 3 distractoras distintas entre sí
+  const distractors = shuffle(_gameCPool.filter(w => w.word !== _gameCTarget.word)).slice(0, 3);
+  const choices = shuffle([_gameCTarget, ...distractors]);
 
   const el = document.getElementById('image-choices');
   if (el) {
@@ -342,11 +387,24 @@ function _getGameSyllables() {
   return ['a','e','i','o','u'];
 }
 
-function _getGameWords(n) {
-  if (!_currentLesson) return [];
-  const pool = [...(_currentLesson.gameWords || [])];
-  while (pool.length < n) pool.push(...(_currentLesson.gameWords || []));
-  return shuffle(pool).slice(0, n);
+// Quita palabras duplicadas (misma "word") manteniendo la primera aparición
+function _dedupeWords(arr) {
+  const seen = new Set();
+  return arr.filter(w => {
+    if (!w || seen.has(w.word)) return false;
+    seen.add(w.word);
+    return true;
+  });
+}
+
+// Baraja una nueva "bolsa" de items a partir del pool, evitando que el primer
+// elemento repita el último usado (evita repetición inmediata al reiniciar la bolsa)
+function _refillBag(pool, lastUsed, keyFn = x => x) {
+  const bag = shuffle(pool);
+  if (bag.length > 1 && lastUsed !== null && keyFn(bag[0]) === keyFn(lastUsed)) {
+    [bag[0], bag[1]] = [bag[1], bag[0]];
+  }
+  return bag;
 }
 
 function _advanceGame(game) {

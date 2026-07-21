@@ -98,8 +98,8 @@ const LESSONS = SILABARIO_DATA.map(d => {
     syllables: item.syllables,
     word:      item.word,
     emoji:     item.emoji || '',
-    // Prioridad: imagen local del libro → ilustración OpenMoji del emoji
-    img:       getWordImg(d.id, item.word) || emojiToOpenMojiUrl(item.emoji),
+    // Prioridad: ilustración OpenMoji (clara y consistente) → imagen escaneada del libro como respaldo
+    img:       emojiToOpenMojiUrl(item.emoji) || getWordImg(d.id, item.word),
     highlight: item.syllables.length > 2,
   }));
 
@@ -151,7 +151,7 @@ const LESSONS = SILABARIO_DATA.map(d => {
     letter:         d.letter,
     mainEmoji:      d.mainEmoji,
     mainWord:       d.mainWord,
-    mainImg:        getLessonMainImg(d.id) || emojiToOpenMojiUrl(d.mainEmoji),
+    mainImg:        emojiToOpenMojiUrl(d.mainEmoji) || getLessonMainImg(d.id),
     boardImg:       getLessonBoardImg(d.id),
     color:          d.color,
     colorLight:     d.colorLight,
